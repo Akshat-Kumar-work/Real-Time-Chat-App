@@ -32,9 +32,20 @@ app.get("/",(req,res)=>{
     res.send("Hello")
 });
 
-//console socket id on connection event
+//console socket id on socket connection event , here socket is a current particular user or client
 io.on("connection",(socket)=>{
     console.log("New User Connected, Socket Id: ",socket.id);
+    
+    //we are sending the Welcome to server message on triggering of welcome event
+   // socket.emit("welcome", `Welcome socket Id ${socket.id}`);
+
+    //for notifications 
+    //socket.broadcast.emit("newSocketJoined",`${socket.id} joined the server`);
+
+    //message-> on triggered message event console the data
+    socket.on("message", ({message,room})=>{
+        io.to(room).emit("receive-message",message)
+    })
 })
 
 HttpServer.listen(PORT,()=>{
