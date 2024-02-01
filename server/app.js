@@ -44,7 +44,13 @@ io.on("connection",(socket)=>{
 
     //message-> on triggered message event console the data
     socket.on("message", ({message,room})=>{
-        io.to(room).emit("receive-message",message)
+        socket.to(room).emit("receive-message",message)
+    });
+
+    socket.on("join-room",(room)=>{
+        socket.join(room)
+        socket.emit("room-joined",`You joined the room ${room}`)
+  
     })
 })
 
